@@ -54,7 +54,7 @@ var kvGridGroup;
             }
             if ((s[1] || '').length < prec) {
                 s[1] = s[1] || '';
-                s[1] += [(prec - s[1].length + 1)].join('0');
+               // s[1] += [(prec - s[1].length + 1)].join('0');
             }
             return s.join(dec);
         };
