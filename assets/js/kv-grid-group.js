@@ -49,12 +49,17 @@ var kvGridGroup;
                     return '' + Math.round(n * k) / k;
                 };
             s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if(s[0] == 0 && s[1] == null){
+                return s[0];
+            }
             if (s[0].length > 3) {
                 s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
             }
             if ((s[1] || '').length < prec) {
                 s[1] = s[1] || '';
-               // s[1] += [(prec - s[1].length + 1)].join('0');
+                for(var i = 0; i <= (prec-s[1].length); i++) {
+                    s[1] += '0';
+                }
             }
             return s.join(dec);
         };
@@ -152,7 +157,7 @@ var kvGridGroup;
                         case 'f_sum':
                         case 'f_avg':
                             $.each(data, function (key, val) {
-                                out += val;
+                                out += val /100;
                             });
                             if (source === 'f_sum') {
                                 return out;
@@ -219,6 +224,9 @@ var kvGridGroup;
                     $col = $(document.createElement('td')).attr('data-summary-col-seq', i);
                     if (data.content && data.content[i]) {
                         content = getSummaryContent(data.content[i], $tr, $cell, i);
+                       /* if($.type(content) !== "string"){
+                            content = content /100 ;
+                        }*/
                         /** @namespace data.contentFormats */
                         /** @namespace data.contentOptions */
                         if (data.contentFormats && data.contentFormats[i]) {
