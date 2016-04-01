@@ -119,14 +119,15 @@ var kvGridGroup;
                 rowspan = $td.attr('rowspan') || 1;
             if (isGrouped) {
                 j = false;
-                $row = $row.next(':not(.kv-grid-group-row');
+                $row = $row.nextAll('tr[data-key]').first();
                 while (!j && $row.length) {
                     $row.find('td[data-col-seq="' + i + '"]').each(function () {
                         var out = $(this).text().replace(/[\s,]+/g, '');
                         out = parseFloat(out);
                         data.push(out);
                     }); // jshint ignore:line
-                    j = $row.hasClass('kv-grid-group-row');
+                   j = $row.hasClass('kv-grid-group-row');
+
                     $row = $row.next();
                 }
             } else {
@@ -349,11 +350,11 @@ var kvGridGroup;
                 if (css) {
                     $cell.removeClass(css).addClass(css);
                 }
-                if ($cell.is('[data-grouped-row]')) {
+              //  if ($cell.is('[data-grouped-row]')) {
                     $tr = $(document.createElement('tr')).addClass('kv-grid-group-row');
                     $cell.closest('tr').before($tr);
-                    $cell.removeAttr('rowspan').appendTo($tr).css('width', 'auto');
-                }
+                    $cell.removeAttr('rowspan').appendTo($tr).css('width', 'auto').css('display','none');
+               // }
                 seq++;
             });
         });
@@ -391,5 +392,6 @@ var kvGridGroup;
             }); // jshint ignore:line
         }
         adjustLastRow();
+        $('.kv-grid-group-row').remove();
     };
 })(window.jQuery);
