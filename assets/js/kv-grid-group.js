@@ -119,6 +119,9 @@ var kvGridGroup;
                 rowspan = $td.attr('rowspan') || 1;
             if (isGrouped) {
                 j = false;
+                var inText = $row.text();
+                //$row = $row.next(':not(.kv-grid-group-row');
+                var startKey = $row.attr("data-group-key");
                 $row = $row.nextAll('tr[data-key]').first();
                 while (!j && $row.length) {
                     $row.find('td[data-col-seq="' + i + '"]').each(function () {
@@ -127,7 +130,10 @@ var kvGridGroup;
                         data.push(out);
                     }); // jshint ignore:line
                    j = $row.hasClass('kv-grid-group-row');
-
+                    var endKey = $row.children().attr("data-group-key");
+                    if(j && endKey != startKey){
+                        j = false;
+                    }
                     $row = $row.next();
                 }
             } else {
@@ -350,11 +356,11 @@ var kvGridGroup;
                 if (css) {
                     $cell.removeClass(css).addClass(css);
                 }
-              //  if ($cell.is('[data-grouped-row]')) {
+                if ($cell.is('[data-grouped-row]')) {
                     $tr = $(document.createElement('tr')).addClass('kv-grid-group-row');
                     $cell.closest('tr').before($tr);
-                    $cell.removeAttr('rowspan').appendTo($tr).css('width', 'auto').css('display','none');
-               // }
+                    $cell.removeAttr('rowspan').appendTo($tr).css('width', 'auto');
+                }
                 seq++;
             });
         });
